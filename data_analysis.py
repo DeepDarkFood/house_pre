@@ -43,7 +43,7 @@ class House():
         # 选出data中数字列,替换nan
         se_data_type = data.dtypes
         type_index = se_data_type[se_data_type != 'object'].index
-        data[type_index] = data[type_index].replace(np.nan, data[type_index].mean)
+        data[type_index] = data[type_index].replace(np.nan, data[type_index].mean())
         new_data = data.dropna(axis=0)
         # one-hot编码
         list_index = [i for i in se_data_type[se_data_type == 'object'].index]
@@ -64,7 +64,9 @@ class House():
 
     def train(self):
         data = self.one_hot(self.del_na())
-        train_X, test_X, train_y, test_y = train_test_split(data.drop('SalePrice', axis=1), data['SalePrice'])
+        X = data.drop('SalePrice', axis=1)
+        y = data['SalePrice']
+        train_X, test_X, train_y, test_y = train_test_split(X, y)
         # 线性回归
         lr = LinearRegression()
         lr.fit(train_X, train_y)
